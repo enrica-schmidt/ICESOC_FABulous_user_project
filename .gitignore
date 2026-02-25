@@ -8,3 +8,5 @@ user_design/*.vh
 user_design/*.vhd
 
 .FABulous/.fabulous_history
+
+icesoc_sim/Test/build_icesoc
