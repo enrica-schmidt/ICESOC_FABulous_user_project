@@ -212,7 +212,24 @@ wire [35:0] E_RES2;
 //top user_design_i (.clk(clk), .io_in(IO_1_bidirectional_frame_config_pass_O), .io_out(IO_1_bidirectional_frame_config_pass_I), .io_oeb(IO_1_bidirectional_frame_config_pass_T));
 
 // instantiate user_design
-top user_design_i (.clk(clk), .W_OPA(W_OPA), .W_OPB(W_OPB), .W_RES0(W_RES0), .W_RES1(W_RES1), .W_RES2(W_RES2), .E_OPA(E_OPA), .E_OPB(E_OPB), .E_RES0(E_RES0), .E_RES1(E_RES1), .E_RES2(E_RES2));
+//top user_design_i (.clk(clk), .W_OPA(W_OPA), .W_OPB(W_OPB), .W_RES0(W_RES0), .W_RES1(W_RES1), .W_RES2(W_RES2), .E_OPA(E_OPA), .E_OPB(E_OPB), .E_RES0(E_RES0), .E_RES1(E_RES1), .E_RES2(E_RES2));
+
+top user_design_i (
+    .clk(clk),
+    .W_OPA(W_OPA),
+    .W_OPB(W_OPB),
+    .W_RES0(W_RES0),
+    .W_RES1(W_RES1),
+    .W_RES2(W_RES2),
+    .E_OPA(E_OPA),
+    .E_OPB(E_OPB),
+    .E_RES0(E_RES0),
+    .E_RES1(E_RES1),
+    .E_RES2(E_RES2),
+    .io_in(IO_1_bidirectional_frame_config_pass_O),
+    .io_out(IO_1_bidirectional_frame_config_pass_I),
+    .io_oeb(IO_1_bidirectional_frame_config_pass_T)
+);
 
 
 endmodule //top_wrapper

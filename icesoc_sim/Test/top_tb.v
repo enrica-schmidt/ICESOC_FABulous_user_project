@@ -42,6 +42,7 @@ module top_tb;
     //logic rx_config; //send bitstream in through this 
     reg rxd_uart_to_mem; //send data to write to sram in through this
     logic txd_uart; //the core writes to this uart
+    logic fetch_enable_2;
     
     //assign io_in[5] = rx_config;
     assign io_in[9] = rxd_uart_to_mem;
@@ -65,7 +66,7 @@ module top_tb;
     //assign io_in[4] = 1'b0; //debug_req_1 = 0
     //assign io_in[5] = 1'b1; //fetch_enable_1 = 1
     assign io_in[6] = 1'b0; //debug_req_2 = 0
-    assign io_in[7] = 1'b1; //fetch_enable_2 = 1
+    assign io_in[7] = fetch_enable_2; //fetch_enable_2 = 1
     //assign io_in[8] = 1'b0; //icesoc_top.rxd_uart=0
     //assign io_in[9] = 1'b1; //icesoc_top.rxd_uart_to_mem=1 (UART: inactive at 1)
 
@@ -101,7 +102,7 @@ module top_tb;
     localparam MEM_BYTES = NUM_INSTR * 7; //7 bytes written per instruction (uart to mem write_cmd, address etc))
     //localparam BIT_PERIOD = 8000;
     localparam BIT_PERIOD_UART_TO_MEM = 12 * CLK_PER;
-    localparam BIT_PERIOD_CONFIG = 10 * CLK_PER;
+    localparam BIT_PERIOD_CONFIG = 174 * CLK_PER; //ComRate in config_UART.v
 
     always #(CLK_PER/2) CLK = (CLK === 1'b0);
 
@@ -190,13 +191,15 @@ module top_tb;
 
         reset = 1'b1;
         repeat (100) @(posedge CLK);
-        reset = 1'b0;
-        repeat (100) @(posedge CLK);
+        //reset = 1'b0;
+        //repeat (100) @(posedge CLK);
+        //keep reset high to minimize switching in cores while efpga is being configured 
 
         //repeat (20) @(posedge CLK);
         //#2500;
         //write bitstream to SelfWriteData
-        //write bitstream to Rx (UART config port)
+        //write bitstream to Rx (UART config port) (this does not yet work)
+        /*
         for (j = 0; j < MAX_BITBYTES; j = j + 1) begin
             //send_byte(bitstream[j], Rx);
             Rx = 1'b0;
@@ -209,14 +212,17 @@ module top_tb;
             Rx = 1'b1;
             #BIT_PERIOD_CONFIG;
         end
+        */
         
 
 `endif
         repeat (100) @(posedge CLK);
         reset = 1'b1; //reset to start the core
+        fetch_enable_2 = 1'b0; //start with core 2 disabled
         repeat (100) @(posedge CLK);
         reset = 1'b0;
-        repeat (100) @(posedge CLK);
+        repeat (1000) @(posedge CLK);
+        fetch_enable_2 = 1'b1; //enabe core 2 now 
         // Enable and reset the counter
         //O_top = 28'b0000_0000_0000_0000_0000_0000_0011;
         //OPA = 72'h000000001FFFFFFFFF;
@@ -241,7 +247,7 @@ module top_tb;
             //     have_errors = 1'b1;
         //end
 
-        #100000;
+        repeat (10000) @(posedge CLK);
 
         if (have_errors)
             $fatal;
