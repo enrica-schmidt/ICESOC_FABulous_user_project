@@ -6,15 +6,6 @@ module top(
     output wire [9:0] io_out, io_oeb
 );
 
-    assign W_RES0 = W_OPA ^ W_OPB; //A xor B bitwise;
-    assign W_RES1 = W_OPA & W_OPB; //A and B bitwise
-    assign W_RES2 = W_OPA | W_OPB; //A or B bitwise
-
-    assign E_RES0 = E_OPA + E_OPB;
-    assign E_RES1 = E_OPA - E_OPB;
-    assign E_RES2 = 32'hDEADBEEF;
-
-
     wire rst = io_in[0];
     wire en = io_in[1];
     reg [31:0] ctr;
