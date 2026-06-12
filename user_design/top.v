@@ -9,6 +9,10 @@ module top(
     wire rst = io_in[0];
     wire en = io_in[1];
     reg [31:0] ctr;
+    
+    //assign W_RES0 = W_OPA ^ W_OPB; //A xor B bitwise;
+    //assign W_RES1 = 32'hdeadbeef; //A and B bitwise
+    assign W_RES2 = W_OPA ^ W_OPB;
 
     always @(posedge clk)
         if (en)
