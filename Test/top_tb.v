@@ -118,6 +118,7 @@ module top_tb;
         #10000;
         repeat (20) @(posedge CLK);
         #2500;
+        //configure eFPGA through SelfWriteStrobe and SelfWriteData
         for (i = 0; i < MAX_BITBYTES; i = i + 4) begin
             SelfWriteData <= {bitstream[i], bitstream[i+1], bitstream[i+2], bitstream[i+3]};
             repeat (2) @(posedge CLK);
@@ -141,7 +142,7 @@ module top_tb;
 
 
             $display("W_IOs:");
-            $display("  fabric(I_top) = 0x%X gold = 0x%X, fabric(T_top) = 0x%X gold = 0x%X\n", I_top, I_top_gold, T_top, T_top_gold);
+            $display("  fabric(I_top) = %b gold = %b, fabric(T_top) = %b gold = %b\n", I_top, I_top_gold, T_top, T_top_gold);
             if (I_top !== I_top_gold)
                 have_errors = 1'b1;
             if (T_top !== T_top_gold)
@@ -152,15 +153,15 @@ module top_tb;
 
         $display("W_CPU_IOs:");
         $display("  Inputs:");
-        $display("  fabric(W_OPA) = 0x%X, fabric(W_OPB) = 0x%X", OPA[35:0], OPB[35:0]);
+        $display("  fabric(W_OPA) = %b, fabric(W_OPB) = %b", OPA[35:0], OPB[35:0]);
         $display("  Outputs:");
-        $display("  fabric(W_RES0) = 0x%X gold = 0x%X, fabric(W_RES1) = 0x%X gold = 0x%X, fabric(W_RES2) = 0x%X gold = 0x%X\n", RES0[35:0], RES0_gold[35:0], RES1[35:0], RES1_gold[35:0], RES2[35:0], RES2_gold[35:0]);
+        $display("  fabric(W_RES0) = %b gold = %b, \nfabric(W_RES1) = %b gold = %b, \nfabric(W_RES2) = %b gold = %b\n", RES0[35:0], RES0_gold[35:0], RES1[35:0], RES1_gold[35:0], RES2[35:0], RES2_gold[35:0]);
 
         $display("E_CPU_IOs:");
         $display("  Inputs:");
-        $display("  fabric(E_OPA) = 0x%X, fabric(E_OPB) = 0x%X", OPA[71:36], OPB[71:36]);
+        $display("  fabric(E_OPA) = %b, fabric(E_OPB) = %b", OPA[71:36], OPB[71:36]);
         $display("  Outputs:");
-        $display("  fabric(E_RES0) = 0x%X gold = 0x%X, fabric(E_RES1) = 0x%X gold = 0x%X, fabric(E_RES2) = 0x%X gold = 0x%X\n", RES0[71:36], RES0_gold[71:36], RES1[71:36], RES1_gold[71:36], RES2[71:36], RES2_gold[71:36]);
+        $display("  fabric(E_RES0) = %b gold = %b, \nfabric(E_RES1) = %b gold = %b, \nfabric(E_RES2) = %b gold = %b\n", RES0[71:36], RES0_gold[71:36], RES1[71:36], RES1_gold[71:36], RES2[71:36], RES2_gold[71:36]);
 
         if (RES0 !== RES0_gold)
             have_errors = 1'b1;
