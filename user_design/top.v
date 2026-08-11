@@ -50,6 +50,10 @@ module top (
     assign W_RES1 = {4'b0000, wres1};
     assign W_RES2 = {4'b0000, wres2};
 
+    assign eres0 = 32'h00000000;
+    assign eres1 = 32'h00000000;
+    assign eres2 = 32'h00000000;
+
     assign E_RES0 = {4'b0000, eres0};
     assign E_RES1 = {4'b0000, eres1};
     assign E_RES2 = {4'b0000, eres2};
