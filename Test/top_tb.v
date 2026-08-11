@@ -131,8 +131,8 @@ module top_tb;
         repeat (100) @(posedge CLK);
         // Enable and reset the counter
         O_top = 10'b00_0000_0011;
-        OPA = 72'h000000001FFFFFFFFF;
-        OPB = 72'hAAAAAAAAA555555555;
+        OPA = 72'h777777777ffffffff8;
+        OPB = 72'hbbbbbbbbb074736574;
         repeat (5) @(posedge CLK);
         // Deassert reset while keeping the counter enabled
         O_top = 10'b00_0000_0010;
@@ -142,7 +142,7 @@ module top_tb;
 
 
             $display("W_IOs:");
-            $display("  fabric(I_top) = %b gold = %b, fabric(T_top) = %b gold = %b\n", I_top, I_top_gold, T_top, T_top_gold);
+            $display("  fabric(I_top) = 0x%0X gold = 0x%0X, fabric(T_top) = 0x%0X gold = 0x%0X\n", I_top, I_top_gold, T_top, T_top_gold);
             if (I_top !== I_top_gold)
                 have_errors = 1'b1;
             if (T_top !== T_top_gold)
@@ -153,15 +153,15 @@ module top_tb;
 
         $display("W_CPU_IOs:");
         $display("  Inputs:");
-        $display("  fabric(W_OPA) = %b, fabric(W_OPB) = %b", OPA[35:0], OPB[35:0]);
+        $display("  fabric(W_OPA) = 0x%8X, \n  fabric(W_OPB) = 0x%8X", OPA[34:3], OPB[31:0]);
         $display("  Outputs:");
-        $display("  fabric(W_RES0) = %b gold = %b, \nfabric(W_RES1) = %b gold = %b, \nfabric(W_RES2) = %b gold = %b\n", RES0[35:0], RES0_gold[35:0], RES1[35:0], RES1_gold[35:0], RES2[35:0], RES2_gold[35:0]);
+        $display("  fabric(W_RES0) = 0x%8X     gold = 0x%8X, \n  fabric(W_RES1) = 0x%8X     gold = 0x%8X, \n  fabric(W_RES2) = 0x%8X     gold = 0x%8X\n", RES0[31:0], RES0_gold[31:0], RES1[31:0], RES1_gold[31:0], RES2[31:0], RES2_gold[31:0]);
 
         $display("E_CPU_IOs:");
         $display("  Inputs:");
-        $display("  fabric(E_OPA) = %b, fabric(E_OPB) = %b", OPA[71:36], OPB[71:36]);
+        $display("  fabric(E_OPA) = 0x%8X, \n  fabric(E_OPB) = 0x%8X", OPA[70:39], OPB[67:36]);
         $display("  Outputs:");
-        $display("  fabric(E_RES0) = %b gold = %b, \nfabric(E_RES1) = %b gold = %b, \nfabric(E_RES2) = %b gold = %b\n", RES0[71:36], RES0_gold[71:36], RES1[71:36], RES1_gold[71:36], RES2[71:36], RES2_gold[71:36]);
+        $display("  fabric(E_RES0) = 0x%8X     gold = 0x%8X, \n  fabric(E_RES1) = 0x%8X     gold = 0x%8X, \n  fabric(E_RES2) = 0x%8X     gold = 0x%8X\n", RES0[67:36], RES0_gold[67:36], RES1[67:36], RES1_gold[67:36], RES2[67:36], RES2_gold[67:36]);
 
         if (RES0 !== RES0_gold)
             have_errors = 1'b1;
